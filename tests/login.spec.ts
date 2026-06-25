@@ -1,34 +1,27 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from '../pages/LoginPage';
 
 test.describe('Login Page', () => {
+  let loginPage: LoginPage;
+
   test.beforeEach(async ({ page }) => {
-    // Navigate to SauceDemo before every test
-    await page.goto('/');
+    // Create a fresh page object and navigate before each test
+    loginPage = new LoginPage(page);
+    await loginPage.goto();
   });
 
   test('successful login with standard user', async ({ page }) => {
-    // Fill in valid credentials
-    await page.locator('[data-test="username"]').fill('standard_user');
-    await page.locator('[data-test="password"]').fill('secret_sauce');
-    await page.locator('[data-test="login-button"]').click();
-    // Verify the URL changes to the inventory page
+    await loginPage.login('standard_user', 'secret_sauce');
     await expect(page).toHaveURL(/inventory/);
   });
-    test('locked out user cannot login', async ({ page }) => {
-    // Attempt login with a locked-out account
-    await page.locator('[data-test="username"]').fill('locked_out_user');
-    await page.locator('[data-test="password"]').fill('secret_sauce');
-    await page.locator('[data-test="login-button"]').click();
-    // Verify the error message mentions the lockout
-    await expect(page.locator('[data-test="error"]')).toContainText('locked out');
+
+  test('locked out user cannot login', async () => {
+    await loginPage.login('locked_out_user', 'secret_sauce');
+    await expect(loginPage.errorMessage).toContainText('locked out');
   });
 
-  test('login fails with invalid credentials', async ({ page }) => {
-    // Attempt login with non-existent credentials
-    await page.locator('[data-test="username"]').fill('invalid_user');
-    await page.locator('[data-test="password"]').fill('wrong_password');
-    await page.locator('[data-test="login-button"]').click();
-    // Verify an error message appears
-    await expect(page.locator('[data-test="error"]')).toBeVisible();
+  test('login fails with invalid credentials', async () => {
+    await loginPage.login('invalid_user', 'wrong_password');
+    await expect(loginPage.errorMessage).toBeVisible();
   });
-}); 
+});
