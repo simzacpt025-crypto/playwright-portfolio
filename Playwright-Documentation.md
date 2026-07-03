@@ -216,14 +216,6 @@ I plan to extend this project by adding:
 
 ---
 
-# Repository
-
-GitHub Repository:
-
-**https://github.com/simzacpt025-crypto/playwright-portfolio**
-
----
-
 # About Me
 
 I'm an aspiring **Software QA Engineer** with interests in:
