@@ -47,3 +47,6 @@ npx playwright show-report
 ## CI/CD
 
 Tests run automatically on every push and pull request via GitHub Actions. The HTML report is uploaded as an artifact on each run.
+
+For an easy to read code see: 
+https://github.com/simzacpt025-crypto/Automation-Testing
